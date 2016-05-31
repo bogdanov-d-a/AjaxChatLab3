@@ -20,7 +20,7 @@
 				<button type="button" id="log_in">Log in</button> 
 			</td>
 			<td>
-				<div id="login_status">Not logged in</div>
+				<div id="login_status"></div>
 			</td>
 			<td>
 				<button type="button" id="log_out">Log out</button> 
