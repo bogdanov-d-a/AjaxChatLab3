@@ -2,18 +2,37 @@
 
 class Database
 {
-	private $link;
+	private $mysqli;
 
 	public function __construct()
 	{
-		$this->link = mysql_connect('localhost', 'root', '')
-			or die('Could not connect: ' . mysql_error());
-		mysql_select_db('lab3') or die('Could not select database');
+		$this->mysqli = new mysqli('localhost', 'root', '', 'lab3');
+		if ($this->mysqli->connect_errno)
+			die('mysqli connect error: ' . $mysqli->connect_errno);
 	}
 
 	public function __destruct()
 	{
-		mysql_close($this->link);
+		$this->mysqli->close();
+	}
+
+	public function query($sql)
+	{
+		$result = $this->mysqli->query($sql);
+		if (!$result)
+			die('query failed');
+		return $result;
+	}
+
+	public function get_user_name($id)
+	{
+		$reader = $this->query('select * from users where id=' . $id . ';');
+
+		if ($reader->num_rows === 0)
+			die('could not find user');
+
+		$user = $reader->fetch_assoc();
+		return $user['name'];
 	}
 }
 
