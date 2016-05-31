@@ -8,9 +8,9 @@
 	{
 		case 'loggedin':
 			if (array_key_exists('user', $_SESSION))
-				$response = array('result'=>1);
+				$response = array('username'=>$_SESSION['user']);
 			else
-				$response = array('result'=>0);
+				$response = array('username'=>'');
 			break;
 
 		default:
