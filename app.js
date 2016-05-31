@@ -25,6 +25,17 @@ $(document).ready(function(){
 			}
 		});
 	};
+
+	document.getElementById("log_out").onclick = function(){
+		$.ajax({
+			url: 'ajax.php?command=logout',
+			dataType: 'json',
+			success: function(response) {
+				if (response['error'] != '')
+					alert(response['error']);
+			}
+		});
+	};
 });
 
 })();

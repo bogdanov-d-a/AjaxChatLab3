@@ -32,6 +32,16 @@
 			}
 			break;
 
+		case 'logout':
+			if (array_key_exists('user', $_SESSION))
+			{
+				unset($_SESSION['user']);
+				$response = array('error'=>'');
+			}
+			else
+				$response = array('error'=>'Not logged in');
+			break;
+
 		default:
 			$response = array();
 			break;
