@@ -34,6 +34,17 @@ class Database
 		$user = $reader->fetch_assoc();
 		return $user['name'];
 	}
+
+	public function check_login_data($username, $password)
+	{
+		$reader = $this->query('select * from users where name=\'' . $username . '\' and password=\'' . $password . '\';');
+
+		if ($reader->num_rows === 0)
+			return null;
+
+		$user = $reader->fetch_assoc();
+		return $user['id'];
+	}
 }
 
 ?>

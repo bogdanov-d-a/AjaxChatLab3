@@ -3,12 +3,28 @@
 $(document).ready(function(){
 	$.ajax({
 		url: 'ajax.php?command=loggedin',
-		success: function(responseStr) {
-			var response = JSON.parse(responseStr);
+		dataType: 'json',
+		success: function(response) {
 			if (response['username'] != '')
 				document.getElementById("login_status").innerHTML = "Logged in as " + response['username'];
 		}
 	});
+
+	document.getElementById("log_in").onclick = function(){
+		$.ajax({
+			url: 'ajax.php?command=login',
+			type: 'POST',
+			data: {
+				username: document.getElementById('username').value,
+				password: document.getElementById('password').value
+			},
+			dataType: 'json',
+			success: function(response) {
+				if (response['error'] != '')
+					alert(response['error']);
+			}
+		});
+	};
 });
 
 })();
