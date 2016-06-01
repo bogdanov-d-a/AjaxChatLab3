@@ -9,6 +9,7 @@
 		case 'loggedin':
 			if (array_key_exists('user', $_SESSION))
 			{
+				$db->update_last_activity($_SESSION['user'], date("Y-m-d H:i:s"));
 				$username = $db->get_user_data($_SESSION['user'])['name'];
 				$response = array('username'=>$username);
 			}
@@ -25,6 +26,7 @@
 				if ($user_id != null)
 				{
 					$_SESSION['user'] = $user_id;
+					$db->update_last_activity($_SESSION['user'], date("Y-m-d H:i:s"));
 					$response = array('error'=>'');
 				}
 				else
@@ -35,6 +37,7 @@
 		case 'logout':
 			if (array_key_exists('user', $_SESSION))
 			{
+				$db->update_last_activity($_SESSION['user'], date("Y-m-d H:i:s", PHP_INT_MAX + 1));
 				unset($_SESSION['user']);
 				$response = array('error'=>'');
 			}
@@ -47,6 +50,7 @@
 			{
 				if ($_POST['text'] != '')
 				{
+					$db->update_last_activity($_SESSION['user'], date("Y-m-d H:i:s"));
 					$db->add_message($_SESSION['user'], $_POST['text']);
 					$response = array('error'=>'');
 				}
@@ -59,14 +63,20 @@
 
 		case 'pullmsglog':
 			if (array_key_exists('user', $_SESSION))
+			{
+				$db->update_last_activity($_SESSION['user'], date("Y-m-d H:i:s"));
 				$response = array('error'=>'', 'result'=>$db->pull_message_log($_POST['lastId']));
+			}
 			else
 				$response = array('error'=>'Not logged in');
 			break;
 
 		case 'getusers':
 			if (array_key_exists('user', $_SESSION))
+			{
+				$db->update_last_activity($_SESSION['user'], date("Y-m-d H:i:s"));
 				$response = array('error'=>'', 'result'=>array('mock user1', 'mock user2'));
+			}
 			else
 				$response = array('error'=>'Not logged in');
 			break;

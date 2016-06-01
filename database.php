@@ -75,6 +75,11 @@ class Database
 
 		return array('lastId'=>$lastId, 'log'=>$msgArray);
 	}
+
+	public function update_last_activity($userId, $date)
+	{
+		$this->no_query('update users set last_activity=\'' . $date . '\' where id=' . $userId . ';');
+	}
 }
 
 ?>
