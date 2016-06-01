@@ -64,6 +64,13 @@
 				$response = array('error'=>'Not logged in');
 			break;
 
+		case 'getusers':
+			if (array_key_exists('user', $_SESSION))
+				$response = array('error'=>'', 'result'=>array('mock user1', 'mock user2'));
+			else
+				$response = array('error'=>'Not logged in');
+			break;
+
 		default:
 			$response = array();
 			break;

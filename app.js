@@ -16,7 +16,7 @@ function updateLoggedInState()
 	});
 }
 
-function pullMessages(scheduleNext)
+function pullMessagesAndUsers(scheduleNext)
 {
 	$.ajax({
 		url: 'ajax.php?command=pullmsglog',
@@ -44,15 +44,36 @@ function pullMessages(scheduleNext)
 			}
 		},
 		complete: function() {
+			getUsers(scheduleNext);
+		}
+	});
+}
+
+function getUsers(scheduleNext)
+{
+	$.ajax({
+		url: 'ajax.php?command=getusers',
+		dataType: 'json',
+		success: function(response) {
+			document.getElementById("users_online").innerHTML = "";
+			if (response['error'] == '')
+			{
+				result = response['result'];
+				result.forEach(function(element, index, array) {
+					document.getElementById("users_online").innerHTML += element + "<br>";
+				});
+			}
+		},
+		complete: function() {
 			if (scheduleNext)
-				setTimeout(function(){ pullMessages(true); }, 1000);
+				setTimeout(function(){ pullMessagesAndUsers(true); }, 1000);
 		}
 	});
 }
 
 $(document).ready(function(){
 	updateLoggedInState();
-	pullMessages(true);
+	pullMessagesAndUsers(true);
 
 	document.getElementById("log_in").onclick = function(){
 		$.ajax({
@@ -67,7 +88,7 @@ $(document).ready(function(){
 				if (response['error'] != '')
 					alert(response['error']);
 				updateLoggedInState();
-				pullMessages();
+				pullMessagesAndUsers();
 			}
 		});
 	};
@@ -80,7 +101,7 @@ $(document).ready(function(){
 				if (response['error'] != '')
 					alert(response['error']);
 				updateLoggedInState();
-				pullMessages();
+				pullMessagesAndUsers();
 			}
 		});
 	};
@@ -97,7 +118,7 @@ $(document).ready(function(){
 				document.getElementById('message').value = "";
 				if (response['error'] != '')
 					alert(response['error']);
-				pullMessages();
+				pullMessagesAndUsers();
 			}
 		});
 	}
