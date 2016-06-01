@@ -75,7 +75,7 @@
 			if (array_key_exists('user', $_SESSION))
 			{
 				$db->update_last_activity($_SESSION['user'], date("Y-m-d H:i:s"));
-				$response = array('error'=>'', 'result'=>array('mock user1', 'mock user2'));
+				$response = array('error'=>'', 'result'=>$db->get_active_users(date("Y-m-d H:i:s", time() - 10)));
 			}
 			else
 				$response = array('error'=>'Not logged in');

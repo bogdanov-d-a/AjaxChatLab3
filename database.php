@@ -80,6 +80,19 @@ class Database
 	{
 		$this->no_query('update users set last_activity=\'' . $date . '\' where id=' . $userId . ';');
 	}
+
+	public function get_active_users($minDate)
+	{
+		$reader = $this->query('select * from users where last_activity>\'' . $minDate . '\';');
+		$result = array();
+
+		while ($user = $reader->fetch_assoc())
+		{
+			array_push($result, $user['name']);
+		}
+
+		return $result;
+	}
 }
 
 ?>
