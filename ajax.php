@@ -57,6 +57,13 @@
 				$response = array('error'=>'Not logged in');
 			break;
 
+		case 'pullmsglog':
+			if (array_key_exists('user', $_SESSION))
+				$response = array('error'=>'', 'result'=>$db->pull_message_log($_POST['lastId']));
+			else
+				$response = array('error'=>'Not logged in');
+			break;
+
 		default:
 			$response = array();
 			break;

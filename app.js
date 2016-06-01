@@ -1,5 +1,7 @@
 (function(){
 
+lastMessageId = 0;
+
 function updateLoggedInState()
 {
 	$.ajax({
@@ -10,6 +12,28 @@ function updateLoggedInState()
 				document.getElementById("login_status").innerHTML = "Logged in as " + response['username'];
 			else
 				document.getElementById("login_status").innerHTML = "Not logged in";
+		}
+	});
+}
+
+function pullMessages()
+{
+	$.ajax({
+		url: 'ajax.php?command=pullmsglog',
+		type: 'POST',
+		data: {
+			lastId: lastMessageId,
+		},
+		dataType: 'json',
+		success: function(response) {
+			if (response['error'] == '')
+			{
+				result = response['result'];
+				lastMessageId = result['lastId'];
+				result['log'].forEach(function(element, index, array) {
+					document.getElementById("message_log").innerHTML += element['sender'] + ": " + element['text'] + "<br>";
+				});
+			}
 		}
 	});
 }
@@ -58,6 +82,7 @@ $(document).ready(function(){
 				document.getElementById('message').value = "";
 				if (response['error'] != '')
 					alert(response['error']);
+				pullMessages();
 			}
 		});
 	}

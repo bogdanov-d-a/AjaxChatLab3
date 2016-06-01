@@ -57,6 +57,24 @@ class Database
 	{
 		$this->no_query('insert into messages (text, sender) values (\'' . $text . '\', \'' . $sender . '\');');
 	}
+
+	public function pull_message_log($lastId)
+	{
+		$reader = $this->query('select * from messages where id > ' . $lastId . ' order by id asc;');
+		$msgArray = array();
+		$lastId = 0;
+
+		while ($message = $reader->fetch_assoc())
+		{
+			array_push($msgArray, array(
+				'sender'=>$this->get_user_name($message['sender']),
+				'text'=>$message['text']
+			));
+			$lastId = $message['id'];
+		}
+
+		return array('lastId'=>$lastId, 'log'=>$msgArray);
+	}
 }
 
 ?>
