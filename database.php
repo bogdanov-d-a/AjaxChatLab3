@@ -31,7 +31,7 @@ class Database
 			die('no_query failed');
 	}
 
-	public function get_user_name($id)
+	public function get_user_data($id)
 	{
 		$reader = $this->query('select * from users where id=' . $id . ';');
 
@@ -39,7 +39,7 @@ class Database
 			die('could not find user');
 
 		$user = $reader->fetch_assoc();
-		return $user['name'];
+		return $user;
 	}
 
 	public function check_login_data($username, $password)
@@ -67,7 +67,7 @@ class Database
 		while ($message = $reader->fetch_assoc())
 		{
 			array_push($msgArray, array(
-				'sender'=>$this->get_user_name($message['sender']),
+				'sender'=>$this->get_user_data($message['sender'])['name'],
 				'text'=>$message['text']
 			));
 			$lastId = $message['id'];

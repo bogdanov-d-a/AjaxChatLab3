@@ -9,7 +9,7 @@
 		case 'loggedin':
 			if (array_key_exists('user', $_SESSION))
 			{
-				$username = $db->get_user_name($_SESSION['user']);
+				$username = $db->get_user_data($_SESSION['user'])['name'];
 				$response = array('username'=>$username);
 			}
 			else
