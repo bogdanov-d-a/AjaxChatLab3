@@ -16,7 +16,7 @@ function updateLoggedInState()
 	});
 }
 
-function pullMessages()
+function pullMessages(scheduleNext)
 {
 	$.ajax({
 		url: 'ajax.php?command=pullmsglog',
@@ -29,7 +29,10 @@ function pullMessages()
 			if (response['error'] == '')
 			{
 				result = response['result'];
-				lastMessageId = result['lastId'];
+
+				if (result['lastId'] > 0)
+					lastMessageId = result['lastId'];
+
 				result['log'].forEach(function(element, index, array) {
 					document.getElementById("message_log").innerHTML += element['sender'] + ": " + element['text'] + "<br>";
 				});
@@ -39,13 +42,17 @@ function pullMessages()
 				lastMessageId = 0;
 				document.getElementById("message_log").innerHTML = "";
 			}
+		},
+		complete: function() {
+			if (scheduleNext)
+				setTimeout(function(){ pullMessages(true); }, 1000);
 		}
 	});
 }
 
 $(document).ready(function(){
 	updateLoggedInState();
-	pullMessages();
+	pullMessages(true);
 
 	document.getElementById("log_in").onclick = function(){
 		$.ajax({
