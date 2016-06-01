@@ -34,12 +34,18 @@ function pullMessages()
 					document.getElementById("message_log").innerHTML += element['sender'] + ": " + element['text'] + "<br>";
 				});
 			}
+			else
+			{
+				lastMessageId = 0;
+				document.getElementById("message_log").innerHTML = "";
+			}
 		}
 	});
 }
 
 $(document).ready(function(){
 	updateLoggedInState();
+	pullMessages();
 
 	document.getElementById("log_in").onclick = function(){
 		$.ajax({
@@ -54,6 +60,7 @@ $(document).ready(function(){
 				if (response['error'] != '')
 					alert(response['error']);
 				updateLoggedInState();
+				pullMessages();
 			}
 		});
 	};
@@ -66,6 +73,7 @@ $(document).ready(function(){
 				if (response['error'] != '')
 					alert(response['error']);
 				updateLoggedInState();
+				pullMessages();
 			}
 		});
 	};
