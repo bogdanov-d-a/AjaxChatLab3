@@ -45,6 +45,22 @@ $(document).ready(function(){
 			}
 		});
 	};
+
+	document.getElementById("send").onclick = function(){
+		$.ajax({
+			url: 'ajax.php?command=sendmsg',
+			type: 'POST',
+			data: {
+				text: document.getElementById('message').value,
+			},
+			dataType: 'json',
+			success: function(response) {
+				document.getElementById('message').value = "";
+				if (response['error'] != '')
+					alert(response['error']);
+			}
+		});
+	}
 });
 
 })();

@@ -24,6 +24,13 @@ class Database
 		return $result;
 	}
 
+	public function no_query($sql)
+	{
+		$result = $this->mysqli->query($sql);
+		if (!$result || !($result === TRUE))
+			die('no_query failed');
+	}
+
 	public function get_user_name($id)
 	{
 		$reader = $this->query('select * from users where id=' . $id . ';');
@@ -44,6 +51,11 @@ class Database
 
 		$user = $reader->fetch_assoc();
 		return $user['id'];
+	}
+
+	public function add_message($sender, $text)
+	{
+		$this->no_query('insert into messages (text, sender) values (\'' . $text . '\', \'' . $sender . '\');');
 	}
 }
 

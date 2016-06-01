@@ -42,6 +42,21 @@
 				$response = array('error'=>'Not logged in');
 			break;
 
+		case 'sendmsg':
+			if (array_key_exists('user', $_SESSION))
+			{
+				if ($_POST['text'] != '')
+				{
+					$db->add_message($_SESSION['user'], $_POST['text']);
+					$response = array('error'=>'');
+				}
+				else
+					$response = array('error'=>'Can\'t send empty message');
+			}
+			else
+				$response = array('error'=>'Not logged in');
+			break;
+
 		default:
 			$response = array();
 			break;
